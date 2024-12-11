@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import ResponsiveDrawer from './Deliveryboysidebar'; // Sidebar component
+import ResponsiveDrawer from './Deliveryboysidebar'; 
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ const drawerWidth = 240;
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <Box sx={{ display: 'flex' }}>
-      <ResponsiveDrawer /> {/* Sidebar Component */}
+      <ResponsiveDrawer /> 
       <Box
         component="main"
         sx={{
@@ -22,7 +22,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar />
-        {children} {/* This is where page content will be rendered */}
+        {children} 
       </Box>
     </Box>
   );

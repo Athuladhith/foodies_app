@@ -33,11 +33,13 @@ const Register: React.FC = () => {
 
     const dispatch = useDispatch();
     const { isAuthenticated, error, loading } = useSelector((state: RootState) => state.auth);
+    console.log(isAuthenticated,'registerpageeee')
 
     useEffect(() => {
         if (isAuthenticated) {
             toast.success("Otp  sent to email!!!!");
             window.location.href = "/otp";
+            
         }
         if (error) {
             console.log(error);

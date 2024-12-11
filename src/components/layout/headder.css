@@ -715,17 +715,6 @@ ul.CTAs a {
   color: rgba(190, 81, 31, 0.507);
 }
 
-/* .detailsBox {
-  position: absolute;
-  top: -100%;
-  right: 0;
-  width: 200px;
-  padding: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  z-index: 999;
-} */
-
 /* Add this to your main CSS file or a separate styles file */
 .slide-in-right-enter {
   transform: translateX(100%);

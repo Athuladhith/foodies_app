@@ -1,24 +1,24 @@
-// Define the types for cart items and delivery info
+
 export interface CartItem {
     fooditem: string;
     quantity: number;
-    // Add other properties if needed
+
   }
   
   export interface DeliveryInfo {
     address: string;
     city: string;
-    // Add other properties if needed
+   
   }
   
-  // Define the state interface
+
   export interface CartState {
     cartItems: CartItem[];
     deliveryInfo?: DeliveryInfo;
     restaurant?: string;
   }
   
-  // Define action types
+
   export const ADD_TO_CART = 'ADD_TO_CART';
   export const REMOVE_ITEM_CART = 'REMOVE_ITEM_CART';
   export const UPDATE_CART_QUANTITY = 'UPDATE_CART_QUANTITY';
@@ -41,7 +41,7 @@ export interface CartItem {
   
   interface RemoveItemCartAction {
     type: typeof REMOVE_ITEM_CART;
-    payload: string; // fooditem ID
+    payload: string; 
   }
   
   interface SaveDeliveryInfoAction {

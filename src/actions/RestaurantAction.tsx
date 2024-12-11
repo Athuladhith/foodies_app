@@ -218,19 +218,6 @@ export const fetchCuisine = (): ThunkAction<void, RootState, unknown, AnyAction>
 };
 
 
-// export const fetchFoodItem = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
-//   try {
-//       dispatch({ type: FETCH_FOODITEM_REQUEST });
-//       const config = getAuthConfig();
-//       const { data } = await api.get('/api/restaurant/fooditem',config);
-//       dispatch({ type: FETCH_FOODITEM_SUCCESS, payload: data });
-//   } catch (error) {
-//       dispatch({
-//           type: FETCH_FOODITEM_FAIL,
-//           payload: 'An error occurred while fetching fooditem',
-//       });
-//   }
-// };
 export const fetchFoodItem = (name?: string, category?: string): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   debugger;
   try {
@@ -244,7 +231,7 @@ export const fetchFoodItem = (name?: string, category?: string): ThunkAction<voi
     if (Array.isArray(data)) {
       dispatch({ type: FETCH_FOODITEM_SUCCESS, payload: data });
     } else {
-      // Handle if data is not an array
+   
       dispatch({ type: FETCH_FOODITEM_FAIL, payload: 'Invalid response format' });
     }
     
@@ -329,7 +316,7 @@ export const fetchSingleFoodItem = (
   try {
     dispatch({ type: FETCH_SINGLE_FOOD_ITEM_REQUEST });
     const { data } = await Api.get(`/api/admin/fooditem/${id}`);
-console.log(data,'dataaaaaaaaaaaaaaaaaffffoodddddddddddddddd')
+
     dispatch({
       type: FETCH_SINGLE_FOOD_ITEM_SUCCESS,
       payload: data,

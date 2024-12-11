@@ -43,7 +43,7 @@ export const addToCart = (foodItemId: string,userId?:string) => async (dispatch:
   } catch (error) {
     dispatch({
       type: ADD_TO_CART_FAIL,
-      // payload: error.message,
+      
     });
   }
 };
@@ -79,86 +79,6 @@ export const clearCartApi = async (userId: string) => {
 };
 
 
-// export const addItemToCart = (
-//   id: string,
-//   quantity: number
-// ): ThunkAction<void, RootState, unknown, CartActionTypes> => async (dispatch, getState) => {
-//   try {
-//     const { data } = await axios.get(`/api/v1/eats/item/${id}`);
-//     const fooditemData = data.data;
-
-//     const image = fooditemData.images && fooditemData.images.length > 0
-//       ? fooditemData.images[0].url
-//       : '';
-
-//     const item: CartItem = {
-//       fooditem: fooditemData._id,
-    
-     
-     
-      
-//       quantity
-//     };
-
-//     dispatch({
-//       type: ADD_TO_CART,
-//       payload: item
-//     });
-
-    
-//   } catch (error) {
-//     console.error('Failed to add item to cart:', error);
-//     // Handle the error appropriately (e.g., dispatch an error action, show a notification)
-//   }
-// };
-
-// export const updateCartQuantity = (
-//   fooditemId: string,
-//   quantity: number
-// ): CartActionTypes => ({
-//   type: UPDATE_CART_QUANTITY,
-//   payload: { fooditemId, quantity }
-// });
-
-// export const removeItemFromCart = (
-//   id: string
-// ): ThunkAction<void, RootState, unknown, CartActionTypes> => async (dispatch, getState) => {
-//   dispatch({
-//     type: REMOVE_ITEM_CART,
-//     payload: id
-//   });
- 
-// };
-
-// export const clearCart = (): CartActionTypes => ({
-//   type: CLEAR_CART
-// });
-
-// export const saveDeliveryInfo = (deliveryInfo: DeliveryInfo): CartActionTypes => ({
-//   type: SAVE_DELIVERY_INFO,
-//   payload: deliveryInfo
-// });
-
-// export const updateDeliveryInfo = (deliveryInfo: DeliveryInfo): CartActionTypes => {
-//   try {
-//     return {
-//       type: SAVE_DELIVERY_INFO,
-//       payload: deliveryInfo
-//     };
-//   } catch (error) {
-//     console.error('Failed to update delivery info:', error);
-//     // Handle the error appropriately
-//     return {
-//       type: SAVE_DELIVERY_INFO,
-//       payload: deliveryInfo // Default to payload if error occurs
-//     };
-//   }
-// };
-
-// export const setRestaurantId = (id: string): CartActionTypes => ({
-//   type: SET_RESTAURANT_ID,
-//   payload: id
-// });
 
 
 export const removeItemFromCart  = (foodItemId: string,userId?:string) => async (dispatch: Dispatch) => {

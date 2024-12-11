@@ -14,37 +14,37 @@ export default function EditRestaurant() {
 
   const { singleRestaurant, loading, error } = useSelector((state: RootState) => state.admin);
 
-  // State variables
+
   const [restaurantName, setRestaurantName] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [avatar1, setAvatar1] = useState<File | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState(''); // For displaying the old avatar
-  const [avatarPreview1, setAvatarPreview1] = useState(''); // For previewing new avatar
+  const [avatarUrl, setAvatarUrl] = useState(''); 
+  const [avatarPreview1, setAvatarPreview1] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [avatar, setAvatar] = useState<string>("");
     const [avatarPreview, setAvatarPreview] = useState<string>("/images/default-restaurant.png");
 
 
-  // Fetch restaurant data when component mounts or ID changes
+
   useEffect(() => {
     if (id) {
       dispatch(fetchSingleRestaurant(id));
     }
   }, [dispatch, id]);
 
-  // Update local state when singleRestaurant is updated
+
   useEffect(() => {
     if (singleRestaurant) {
       setRestaurantName(singleRestaurant.restaurantName);
       setAddress(singleRestaurant.address);
       setPhoneNumber(singleRestaurant.phoneNumber);
-      setAvatarUrl(singleRestaurant.avatar); // Set the existing avatar URL
-      setAvatarPreview(singleRestaurant.avatar); // Initial preview
+      setAvatarUrl(singleRestaurant.avatar); 
+      setAvatarPreview(singleRestaurant.avatar); 
     }
   }, [singleRestaurant]);
 
-  // Handle form submission
+
   const handleUpdateRestaurant = async () => {
     if (id) {
       const formData = new FormData();
@@ -52,13 +52,13 @@ export default function EditRestaurant() {
       formData.append('address', address);
       formData.append('phoneNumber', phoneNumber);
 
-      // If a new avatar is selected, add it to formData
+
       if (avatar) {
-        formData.append('avatar', avatar); // Append new avatar only if it's selected
+        formData.append('avatar', avatar);
       }
 
       try {
-        await dispatch(updateRestaurant(id, formData)); // Dispatch formData to update restaurant
+        await dispatch(updateRestaurant(id, formData)); 
         setOpenSnackbar(true);
         setTimeout(() => navigate('/adminhome'), 1000);
       } catch (err) {
@@ -67,18 +67,6 @@ export default function EditRestaurant() {
     }
   };
 
-  // Handle file input change and set preview
-  // const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     setAvatar(file);
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setAvatarPreview(reader.result as string); // Set preview URL
-  //     };
-  //     reader.readAsDataURL(file); // Read the file and convert to base64 for preview
-  //   }
-  // };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "avatar") {
         const reader = new FileReader();
@@ -127,17 +115,17 @@ export default function EditRestaurant() {
           margin="normal"
         />
 
-        {/* Show existing or preview avatar */}
+    
         <div style={{ marginTop: '16px' }}>
           <Typography variant="body1">Avatar:</Typography>
           <img
-            src={avatarPreview || avatarUrl} // Show preview if new avatar is selected, else show the old one
+            src={avatarPreview || avatarUrl}
             alt="Restaurant Avatar"
             style={{ width: '150px', height: '150px', objectFit: 'cover', marginTop: '8px', borderRadius: '50%' }}
           />
         </div>
 
-        {/* Input for new avatar */}
+ 
         <input
             type='file'
             name='avatar'

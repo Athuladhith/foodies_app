@@ -16,7 +16,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import LogoutIcon from '@mui/icons-material/Logout'; // Import the logout icon
+import LogoutIcon from '@mui/icons-material/Logout'; 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
@@ -72,12 +72,12 @@ export default function ResponsiveDrawer(props: Props) {
         ))}
       </List>
       <Divider />
-      {/* Logout Button */}
+   
       <List>
         <ListItem disablePadding>
           <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
-              <LogoutIcon /> {/* Logout icon */}
+              <LogoutIcon /> 
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItemButton>
@@ -109,7 +109,7 @@ export default function ResponsiveDrawer(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            restaurant
+            DELIVERY HOME
           </Typography>
         </Toolbar>
       </AppBar>
@@ -125,7 +125,7 @@ export default function ResponsiveDrawer(props: Props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true, 
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -150,7 +150,7 @@ export default function ResponsiveDrawer(props: Props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        {children} {/* This is where the route content will be rendered */}
+        {children} 
       </Box>
     </Box>
   );

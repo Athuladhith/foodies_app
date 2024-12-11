@@ -1,17 +1,19 @@
+
+
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../Api";
 import Headder from "./Headder";
-import io from 'socket.io-client';
-// const socket = io('http://localhost:5000')
+import { io } from 'socket.io-client';
+import { Button, Card, CardContent, Typography, Chip, Divider } from "@mui/material";
+import { ShoppingBagOutlined, DoneOutlined, ErrorOutlineOutlined } from "@mui/icons-material";
+const socket = io('http://localhost:5000');
 
 const OrdersPage = () => {
-  // Define state with correct types
   const [orders, setOrders] = useState<IOrder[]>([]);
-
   const storedUser = localStorage.getItem("user");
   const userId = storedUser ? JSON.parse(storedUser).id : null;
 
-  // Define interfaces
   interface IFoodItem {
     _id: string;
     foodItem: {
@@ -33,59 +35,151 @@ const OrdersPage = () => {
     const fetchOrders = async () => {
       try {
         const response = await api.get(`/api/users/orderss/${userId}`);
-        
-        console.log(response, "response from backend of order");
-        console.log(response.data, "response data order");
-        setOrders(response.data); // Assume response.data is correctly typed as IOrder[]
+        setOrders(response.data);
       } catch (error) {
         console.error("Error fetching orders", error);
       }
     };
 
+    socket.on('acceptOrder', (updatedOrder) => {
+      console.log(updatedOrder, 'the data from the delivery boy');
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === updatedOrder.id
+            ? { ...order, orderStatus: updatedOrder.orderStatus }
+            : order
+        )
+      );
+    });
+
+    socket.on('completeOrder', (updatedOrder) => {
+      console.log(updatedOrder, 'LATEST DATT data from the delivery boy');
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === updatedOrder.id
+            ? { ...order, orderStatus: updatedOrder.orderStatus }
+            : order
+        )
+      );
+    });
+    socket.on('foodpreparing', (updatedOrder) => {
+      console.log(updatedOrder, 'preparing data from restttt');
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === updatedOrder.id
+            ? { ...order, orderStatus: updatedOrder.orderStatus }
+            : order
+        )
+      );
+    });
+
+    socket.on('ordertouser', (updatedOrder) => {
+      console.log(updatedOrder, 'LATE data data from the rest');
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === updatedOrder.id
+            ? { ...order, orderStatus: updatedOrder.orderStatus }
+            : order
+        )
+      );
+    });
+
     if (userId) {
       fetchOrders();
     }
+    return () => {
+      socket.off('acceptOrder');
+      socket.off('completeOrder');
+      socket.off('ordertouser')
+      socket.off('foodpreparing')
+    };
   }, [userId]);
+
+  console.log(orders,'orderin the order page')
 
   return (
     <>
-    <Headder/>
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center text-red-600">Your Orders</h1>
-      <div className="space-y-6">
-        {orders.length === 0 ? (
-          <p className="text-center text-lg text-gray-500">No orders found.</p>
-        ) : (
-          orders.map((order) => (
-            <div
-              key={order._id}
-              className="bg-white shadow-lg rounded-lg p-6 border border-gray-300 hover:shadow-xl transition-shadow duration-300"
-            >
-              <h3 className="text-2xl font-semibold mb-2 text-green-600">Order ID: {order._id}</h3>
-              <p className="text-gray-700">
-                <span className="font-bold">Total Amount:</span> <span className="text-red-500">${order.totalAmount}</span>
-              </p>
-              <p className={`text-gray-700 ${order.paymentStatus === "Paid" ? "text-green-500" : "text-red-500"}`}>
-                <span className="font-bold">Payment Status:</span> {order.paymentStatus}
-              </p>
-              <p className={`text-gray-700 ${order.orderStatus === "Delivered" ? "text-green-500" : "text-yellow-500"}`}>
-                <span className="font-bold">Order Status:</span> {order.orderStatus}
-              </p>
+      <Headder />
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="text-center mb-10">
+          <Typography variant="h4" component="h1" className="font-bold text-red-600">
+            Your Orders
+          </Typography>
+          <Divider className="my-4" />
+        </div>
 
-              <h4 className="mt-4 mb-2 text-xl font-medium">Items:</h4>
-              <ul className="list-disc list-inside space-y-1">
-                {order.foodItems.map((item) => (
-                  <li key={item._id} className="text-gray-600">
-                    {item.foodItem.name} - Quantity: {item.quantity}
-                  </li>
-                ))}
-              </ul>
-              <hr className="my-4 border-gray-300" />
-            </div>
-          ))
-        )}
+        <div className="space-y-6">
+          {orders.length === 0 ? (
+            <Typography variant="body1" className="text-center text-gray-500">
+              No orders found.
+            </Typography>
+          ) : (
+            orders.map((order) => (
+              <Card
+                key={order._id}
+                className="hover:shadow-2xl transition-shadow duration-300 border border-gray-300 rounded-lg"
+                elevation={3}
+              >
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <Typography variant="h6" component="h2" className="text-green-600">
+                      <ShoppingBagOutlined className="mr-2" />
+                      Order ID: {order._id}
+                    </Typography>
+                    <Chip
+                      label={order.orderStatus}
+                      color={order.orderStatus === "Delivered" ? "success" : "warning"}
+                      className="font-semibold"
+                    />
+                  </div>
+                  <Typography variant="body2" className="text-gray-700 mt-2">
+                    <span className="font-bold">Total Amount:</span>{" "}
+                    <span className="text-red-500">Rs.{order.totalAmount}</span>
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    
+                  >
+                    {/* <DoneOutlined className="mr-2" /> */}
+                    Payment Status: {order.paymentStatus}
+                  </Typography>
+
+                  <Divider className="my-4" />
+
+                  <Typography variant="subtitle1" className="text-gray-800 font-semibold">
+                    Ordered Items:
+                  </Typography>
+                  <ul className="list-disc list-inside mt-2 space-y-1">
+                    {order.foodItems.map((item) => (
+                      <li key={item._id} className="text-gray-600">
+                        {item.foodItem.name} - Quantity: {item.quantity}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Divider className="my-4" />
+
+                  <div className="flex justify-between items-center">
+                    <Typography variant="body2" className="text-gray-600">
+                      Placed on: <span className="font-medium">2024-11-21</span>
+                    </Typography>
+                    <Link to={`/track-order/${order._id}`}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        className="bg-blue-500 hover:bg-blue-600"
+                      >
+                        Track Order
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 };

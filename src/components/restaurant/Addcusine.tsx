@@ -22,7 +22,7 @@ const Cuisine: React.FC = () => {
   const handleAddCuisine = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Validation checks
+  
     if (cuisineName.trim() === "") {
       toast.error("Cuisine name is required.");
       return;

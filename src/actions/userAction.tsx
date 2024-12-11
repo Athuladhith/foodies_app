@@ -11,14 +11,19 @@ import {
     REGISTER_GOOGLE_FAIL,
     LOGIN_USER_REQUEST ,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAIL
+    LOGIN_USER_FAIL,
+    FETCH_RESTAURANTS_SUCCESS,
+    FETCH_RESTAURANTS_REQUEST,
+    FETCH_RESTAURANTS_FAIL
 
 } from '../constants/userConatants';
 import { Dispatch } from 'redux';
 import { AnyAction } from 'redux';
 import{getAuthConfig} from '../Apiconfig'
 import thunk, { ThunkAction } from 'redux-thunk';
+import { RootState } from '../store';
 import { ConfirmationNumberSharp } from '@mui/icons-material';
+import api from '../Api';
 
 
 
@@ -40,7 +45,7 @@ export const register = (userData: FormData) => async (dispatch: Dispatch<AnyAct
                 "Content-Type": "multipart/form-data",
             }
         };
-        console.log(userData,"byyeee")
+     
         const entriesArray = Array.from(userData.entries());
         console.log("FormData entries:");
         entriesArray.forEach(([key, value]) => {
@@ -98,10 +103,11 @@ export const login = (userData: { email: string; password: string }) => async (d
       localStorage.setItem('tokenss', response.data.token);
       console.log(response.data.token,'tokennnnnfrom backenddddd')
 localStorage.setItem('user', JSON.stringify(response.data.user));
+localStorage.setItem('userss', JSON.stringify(response.data.user.name))
 
       console.log(response.data.token,"show")
       console.log(response.data.user,'userdetails')
-    //   localStorage.setItem('token', response.data.token);
+   
       dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: {
@@ -177,3 +183,34 @@ export const verifyOtp = (otp: string) => async (dispatch: Dispatch<AnyAction>) 
         });
     }
 }
+
+
+export const fetchRestaurants = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch<AnyAction>) => {
+
+    try {
+        debugger;
+      dispatch({ type: FETCH_RESTAURANTS_REQUEST });
+     
+     
+    
+  
+      
+  
+      const { data } = await axios.get('http://localhost:5000/api/users/restaurants',);
+
+  
+      dispatch({ type: FETCH_RESTAURANTS_SUCCESS, payload: data });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch({
+          type: FETCH_RESTAURANTS_FAIL,
+          payload: error.response?.data.message || 'An error occurred',
+        });
+      } else {
+        dispatch({
+          type: FETCH_RESTAURANTS_FAIL,
+          payload: 'An unknown error occurred',
+        });
+      }
+    }
+  };

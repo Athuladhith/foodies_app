@@ -16,7 +16,7 @@ const AdminLogin: React.FC = () => {
   if (isAuthenticated) {
     toast.success("AdminLogin successful!"); 
     setTimeout(() => {
-      // window.location.href = '/adminhome';
+      
       navigate('/adminhome');
     }, 1000); 
   }

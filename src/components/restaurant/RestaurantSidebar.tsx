@@ -1,3 +1,6 @@
+
+
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
@@ -20,16 +23,26 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import CategoryIcon from '@mui/icons-material/Category';
 import MessageIcon from '@mui/icons-material/Message';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import DashboardIcon from '@mui/icons-material/Dashboard'
 
-const drawerWidth = 240;
+
+const drawerWidth = 260;
+
+const menuItems = [
+  { text: 'Restaurant Home', icon: <RestaurantIcon />, to: 'restauranthome' },
+  { text: 'Food Items', icon: <FastfoodIcon />, to: 'fooditem' },
+  { text: 'Categories', icon: <CategoryIcon />, to: 'categorylist' },
+  { text: 'Cuisines', icon: <RestaurantMenuIcon />, to: 'cuisine' },
+  { text: 'Messages', icon: <MessageIcon />, to: 'restaurantchat' },
+  { text: 'Dashboard', icon: <DashboardIcon />, to: 'dashboard' },
+];
 
 interface Props {
   window?: () => Window;
-  children?: React.ReactNode;
 }
 
-export default function ResponsiveDrawer(props: Props) {
-  const { window, children } = props;
+const ResponsiveDrawer: React.FC<Props> = (props) => {
+  const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
 
@@ -43,78 +56,95 @@ export default function ResponsiveDrawer(props: Props) {
   };
 
   const drawer = (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap>
-          Restaurant Dashboard
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <List>
-        {[
-          { text: 'Restauranthome', icon: <RestaurantIcon /> },
-          { text: 'Fooditem', icon: <FastfoodIcon /> },
-          { text: 'Categorylist', icon: <CategoryIcon /> },
-          { text: 'Cuisine', icon: <RestaurantMenuIcon /> },
-          { text: 'Message', icon: <MessageIcon /> },
-        ].map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton component={Link} to={`/${item.text.toLowerCase().replace(' ', '-')}`}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+    <Box
+      sx={{
+        background: 'linear-gradient(135deg, #1e88e5, #42a5f5)',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        color: '#ffffff',
+      }}
+    >
+      <Box>
+        <Toolbar
+          sx={{
+            justifyContent: 'center',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+            py: 2,
+            color: '#ffffff',
+          }}
+        >
+          Dashboard
+        </Toolbar>
+        <Divider sx={{ borderColor: 'rgba(255,255,255,0.3)' }} />
+        <List>
+           {menuItems.map((item, index) => (
+             <ListItem key={index} disablePadding>
+               <ListItemButton
+                 component={Link}
+                 to={`/${item.to}`}
+                 sx={{
+                   color: '#ffffff',
+                  '&:hover': {
+                   background: 'rgba(255, 255, 255, 0.1)',
+                   },
+                }}
+              >
+                <ListItemIcon sx={{ color: '#ffffff' }}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+             </ListItemButton>
+           </ListItem>
+          ))}
+         </List>
+      </Box>
+      <Box sx={{ position: 'absolute', bottom: 0, width: '100%' }}>
+        <Divider sx={{ borderColor: 'rgba(255,255,255,0.3)' }} />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
             </ListItemButton>
           </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        <ListItem key="logout" disablePadding>
-          <ListItemButton onClick={handleLogout}>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </div>
+        </List>
+      </Box>
+    </Box>
   );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          backgroundColor: '#1976d2',
-        }}
-      >
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{
+              display: { sm: 'none' },
+            }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
             Restaurant Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+        }}
       >
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -123,7 +153,10 @@ export default function ResponsiveDrawer(props: Props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
           }}
         >
           {drawer}
@@ -132,26 +165,18 @@ export default function ResponsiveDrawer(props: Props) {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
           }}
           open
         >
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 0, // Remove padding
-          m: 0, // Remove margin
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          overflowX: 'auto', // Ensure the content is scrollable horizontally if needed
-        }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
     </Box>
   );
-}
+};
+
+export default ResponsiveDrawer;

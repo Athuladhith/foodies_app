@@ -1,21 +1,28 @@
+
+
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import CircularProgress from '@mui/material/CircularProgress';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Grid,
+  CircularProgress,
+  Card,
+  Typography,
+  Box,
+} from '@mui/material';
 import MainLayout from './Mainlayout';
 import { fetchFoodItem, deleteitem } from '../../actions/RestaurantAction';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,9 +64,8 @@ export default function FoodItemTable() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { foodItem,loading } = useSelector((state: RootState) => state.restaurant);
+  const { foodItem, loading } = useSelector((state: RootState) => state.restaurant);
 
-  // Fetch food items on component mount or search change
   React.useEffect(() => {
     dispatch(fetchFoodItem(searchName, searchCategory));
   }, [dispatch, searchName, searchCategory]);
@@ -104,114 +110,129 @@ export default function FoodItemTable() {
 
   return (
     <MainLayout>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        {/* Search Inputs */}
-        <Grid container spacing={2} sx={{ padding: '16px' }}>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Search by Name"
-              variant="outlined"
-              value={searchName}
-              onChange={handleSearchNameChange}
-            />
+      <Box sx={{ padding: '24px' }}>
+        <Typography variant="h4" component="h1" sx={{ marginBottom: 2, fontWeight: 'bold', textAlign: 'center' }}>
+          Food Items
+        </Typography>
+        <Card sx={{ padding: '16px', borderRadius: 2 }}>
+          <Grid container spacing={2} sx={{ marginBottom: 2 }}>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label="Search by Name"
+                variant="outlined"
+                value={searchName}
+                onChange={handleSearchNameChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label="Search by Category"
+                variant="outlined"
+                value={searchCategory}
+                onChange={handleSearchCategoryChange}
+              />
+            </Grid>
           </Grid>
-        </Grid>
 
-        {/* Loader */}
-        {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <>
-            {/* Table Content */}
-            <TableContainer sx={{ maxHeight: 440 }}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Array.isArray(foodItem) &&
-                    foodItem.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((foodItem: FoodItem) => (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={foodItem._id}>
-                        {columns.map((column) => {
-                          if (column.id === 'action') {
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <>
+              <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+                <Table stickyHeader>
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Array.isArray(foodItem) &&
+                      foodItem.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((foodItem: FoodItem) => (
+                        <TableRow hover key={foodItem._id}>
+                          {columns.map((column) => {
+                            if (column.id === 'action') {
+                              return (
+                                <TableCell key={column.id} align={column.align}>
+                                  <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={() => navigate(`/editfooditem/${foodItem._id}`)}
+                                    sx={{ marginRight: 1 }}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button variant="contained" color="error" onClick={() => handleDeleteClick(foodItem._id)}>
+                                    Delete
+                                  </Button>
+                                </TableCell>
+                              );
+                            } else if (column.id === 'image') {
+                              return (
+                                <TableCell key={column.id} align={column.align}>
+                                  <img
+                                    src={`data:image/jpeg;base64,${foodItem.image}`}
+                                    alt={foodItem.name}
+                                    style={{ width: '100px', height: 'auto', borderRadius: '8px' }}
+                                  />
+                                </TableCell>
+                              );
+                            }
+                            const value = foodItem[column.id as keyof FoodItem];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={() => navigate(`/editfooditem/${foodItem._id}`)}
-                                  sx={{ marginRight: 1 }}
-                                >
-                                  Edit
-                                </Button>
-                                <Button variant="contained" color="error" onClick={() => handleDeleteClick(foodItem._id)}>
-                                  Delete
-                                </Button>
+                                {value}
                               </TableCell>
                             );
-                          } else if (column.id === 'image') {
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                <img
-                                  src={`data:image/jpeg;base64,${foodItem.image}`}
-                                  alt={foodItem.name}
-                                  style={{ width: '100px', height: 'auto' }}
-                                />
-                              </TableCell>
-                            );
-                          }
-                          const value = foodItem[column.id as keyof FoodItem];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {value}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                          })}
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
 
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={Array.isArray(foodItem) ? foodItem.length : 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </>
-        )}
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={Array.isArray(foodItem) ? foodItem.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </>
+          )}
 
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-          <Button variant="contained" color="primary" onClick={handleAddFoodItemClick}>
-            Add Food Item
-          </Button>
-        </div>
-      </Paper>
+          <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+            <Button variant="contained" color="success" onClick={handleAddFoodItemClick}>
+              Add Food Item
+            </Button>
+          </Box>
+        </Card>
 
-      {/* Confirmation Dialog */}
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">Are you sure you want to delete this food item?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">Cancel</Button>
-          <Button onClick={handleConfirmDelete} color="error" autoFocus>Delete</Button>
-        </DialogActions>
-      </Dialog>
+       
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Are you sure you want to delete this food item?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmDelete} color="error" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </MainLayout>
   );
 }

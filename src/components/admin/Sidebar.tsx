@@ -51,18 +51,12 @@ export default function ResponsiveDrawer(props: Props) {
     localStorage.removeItem('admin');
     
 
-    // Redirect using react-router-dom's navigate
+
     navigate('/adminlogin');
   
   };
 
-  // Protect the admin routes by redirecting if not logged in
-  // useEffect(() => {
-  //   const admintoken = localStorage.getItem('admintoken');
-  //   if (!admintoken) {
-  //     navigate('/adminlogin');
-  //   }
-  // }, [navigate]);
+
 
   const drawer = (
     <div>

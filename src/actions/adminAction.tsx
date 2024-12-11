@@ -4,6 +4,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../store';
 import api from '../Api';
+import Api from '../AApi'
 import{getAuthConfig} from '../Apiconfig'
 import {
   LOGIN_ADMIN_REQUEST,
@@ -40,7 +41,7 @@ export const adminlogin = (userData: { email: string; password: string }): Thunk
   try {
     dispatch({ type: LOGIN_ADMIN_REQUEST });
 
-    const response = await api.post("/api/admin/adminlogin", userData);
+    const response = await Api.post("/api/admin/adminlogin", userData);
     console.log(response.data.admin,'admindetails')
 
      localStorage.setItem('admintoken',response.data.token);
@@ -76,7 +77,7 @@ export const fetchUsers = (): ThunkAction<void, RootState, unknown, AnyAction> =
     dispatch({ type: FETCH_USERS_REQUEST });
     const config = getAuthConfig();
 
-    const { data } = await api.get('/api/admin/users',config);
+    const { data } = await Api.get('/api/admin/users',config);
 
     dispatch({ type: FETCH_USERS_SUCCESS, payload: data });
   } catch (error) {
@@ -130,7 +131,7 @@ export const fetchRestaurants = (): ThunkAction<void, RootState, unknown, AnyAct
 
     
 
-    const { data } = await api.get('/api/admin/restaurants',);
+    const { data } = await Api.get('/api/admin/restaurants',);
 
     dispatch({ type: FETCH_RESTAURANTS_SUCCESS, payload: data });
   } catch (error) {
@@ -153,7 +154,7 @@ export const blockUnblockRestaurant = (restaurantId: string, newStatus: boolean)
   try {
     dispatch({ type: BLOCK_UNBLOCK_RESTAURANT_REQUEST });
     const config = getAuthConfig();
-    const { data } = await api.put(`/api/admin/restaurants/${restaurantId}/block`, { isBlocked: newStatus },config);
+    const { data } = await Api.put(`/api/admin/restaurants/${restaurantId}/block`, { isBlocked: newStatus },config);
 
     dispatch({
       type: BLOCK_UNBLOCK_RESTAURANT_SUCCESS,
@@ -178,9 +179,9 @@ export const fetchDeliveryPersons = (): ThunkAction<void, RootState, unknown, An
  
   try {
     dispatch({ type: FETCH_DELIVERY_PERSONS_REQUEST });
-    const config = getAuthConfig();
+    
 
-    const { data } = await api.get('/api/admin/delivery-persons',config);
+    const { data } = await Api.get('/api/admin/delivery-persons');
 
     dispatch({ type: FETCH_DELIVERY_PERSONS_SUCCESS, payload: data });
   } catch (error) {
@@ -202,7 +203,7 @@ export const blockUnblockDeliveryboy = (deliveryboyId: string, newStatus: boolea
   try {
     dispatch({ type: BLOCK_UNBLOCK_DELIVERYBOY_REQUEST });
     const config = getAuthConfig();
-    const { data } = await api.put(`/api/admin/delivery-persons/${deliveryboyId}/block`, { isBlocked: newStatus },config);
+    const { data } = await Api.put(`/api/admin/delivery-persons/${deliveryboyId}/block`, { isBlocked: newStatus },config);
 
     dispatch({
       type: BLOCK_UNBLOCK_DELIVERYBOY_SUCCESS,
@@ -229,7 +230,7 @@ export const fetchSingleRestaurant = (id: string): ThunkAction<void, RootState, 
   try {
       dispatch({ type: FETCH_SINGLE_RESTAURANT_REQUEST });
       const config = getAuthConfig();
-      const { data } = await api.get(`/api/admin/restaurant/${id}`,config);
+      const { data } = await Api.get(`/api/admin/restaurant/${id}`,config);
       console.log(data,'restaurant data in check')
 
       dispatch({
@@ -263,7 +264,7 @@ export const updateRestaurant = (
     });
     const config = getAuthConfig();
 
-    const { data } = await api.put(`/api/admin/updaterestaurant/${id}`, updateData,config);
+    const { data } = await Api.put(`/api/admin/updaterestaurant/${id}`, updateData,config);
     console.log(data, 'from updaterest');
 
     dispatch({

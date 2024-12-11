@@ -1,16 +1,19 @@
+
+
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchFoodItemsByCategory } from '../../actions/categoryAction';
 import { addToCart } from '../../actions/cartAction';
 import { RootState } from '../../store';
-import Headder from './Headder';
+import Header from './Headder';
 import Footer from './Footer';
+import { FaShoppingCart } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const FoodItems: React.FC = () => {
-  const { categoryId } = useParams<{ categoryId: string }>(); 
+  const { categoryId } = useParams<{ categoryId: string }>();
   const dispatch = useDispatch();
   const { foodItem } = useSelector((state: RootState) => state.restaurant);
   const storedUser = localStorage.getItem('user');
@@ -25,7 +28,7 @@ const FoodItems: React.FC = () => {
   const handleAddToCart = (item: any) => {
     if (user) {
       dispatch(addToCart(item, user?.id) as any);
-      // Display the success toast notification
+     
       toast.success(`${item.name} added to cart!`, {
         position: "top-right",
         autoClose: 3000,
@@ -50,24 +53,24 @@ const FoodItems: React.FC = () => {
 
   return (
     <>
-      <Headder />
+      <Header />
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Food Items</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <h1 className="text-3xl font-bold text-center mb-6">Delicious Food Items</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {foodItem.map((item: any) => (
-            <div key={item._id} className="border rounded-lg overflow-hidden shadow-md">
+            <div key={item._id} className="bg-white border rounded-lg overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-[#FF6347]">
               <img
                 src={`data:image/jpeg;base64,${item.image}`}
                 alt={item.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover transition-transform duration-500 ease-in-out"
               />
               <div className="p-4">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-600">Price: Rs.{item.price}</p>
-                {/* <p className="text-gray-600">Quantity: {item.quantity}</p> */}
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">{item.name}</h2>
+                <p className="text-gray-600 text-sm mb-2">Price: Rs.{item.price}</p>
+                <p className="text-gray-600 text-sm mb-4">Quantity: {item.quantity}</p>
                 <button
                   onClick={() => handleAddToCart(item)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="w-full px-4 py-2 bg-[#FF6347] text-white rounded-full transition-colors duration-300 hover:bg-[#FF4500]"
                 >
                   Add to Cart
                 </button>
@@ -76,8 +79,14 @@ const FoodItems: React.FC = () => {
           ))}
         </div>
       </div>
+
+     
+      <button className="fixed bottom-10 right-10 p-4 bg-[#FF6347] rounded-full shadow-lg hover:bg-[#FF4500]">
+        <FaShoppingCart className="text-white text-2xl" />
+      </button>
+
       <Footer />
-      <ToastContainer /> {/* Add ToastContainer to render toast notifications */}
+      <ToastContainer />
     </>
   );
 };

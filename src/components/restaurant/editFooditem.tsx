@@ -27,8 +27,8 @@ export default function EditFoodItem() {
     if (id) {
       dispatch(fetchSingleFoodItem(id));
     }
-    dispatch(fetchCategories()); // Fetch categories
-    dispatch(fetchCuisine()); // Fetch cuisines
+    dispatch(fetchCategories()); 
+    dispatch(fetchCuisine());
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -39,11 +39,11 @@ export default function EditFoodItem() {
       setImagePreview(`data:image/jpeg;base64,${singleFoodItem.image}`)
       setImage(`data:image/jpeg;base64,${singleFoodItem.image}`)
 
-      // Find the category name using the category ID
+
       const selectedCategory = category.find((cat) => cat._id === singleFoodItem.category);
       setCategory(selectedCategory ? selectedCategory._id : '');
 
-      // Find the cuisine name using the cuisine ID
+
       const selectedCuisine = cuisine.find((cui) => cui._id === singleFoodItem.cuisine);
       setCuisine(selectedCuisine ? selectedCuisine._id : '');
 
@@ -122,7 +122,7 @@ export default function EditFoodItem() {
           margin="normal"
         />
 
-        {/* Category Dropdown */}
+       
         <FormControl fullWidth margin="normal">
           <InputLabel id="category-label">Category</InputLabel>
           <Select
@@ -139,7 +139,7 @@ export default function EditFoodItem() {
           </Select>
         </FormControl>
 
-        {/* Cuisine Dropdown */}
+       
         <FormControl fullWidth margin="normal">
           <InputLabel id="cuisine-label">Cuisine</InputLabel>
           <Select

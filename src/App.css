@@ -8,16 +8,9 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  /* background-image: linear-gradient(
-      0deg,
-      rgba(250, 250, 250, 0.7),
-      rgba(250, 250, 250, 0.5)
-    ),
-    url("../public/images/background.png");
-  background-repeat: no-repeat;
-  background-size: cover; */
+ 
 }
-/*///////////////////////////////////////////////////////////////////////
+
 
 
 /* Ensures table is responsive */
@@ -31,10 +24,7 @@ body {
   }
 }
 
-/* Additional general styling for a more professional look */
-/* body {
-  font-family: 'Arial', sans-serif;
-} */
+
 
 h1 {
   font-size: 2rem;

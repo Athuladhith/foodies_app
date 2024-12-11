@@ -114,13 +114,7 @@ export default function RestaurantTable() {
 >
   {restaurant.isBlocked ? 'Unblock' : 'Block'}
 </Button>
-                            {/* <Button
-                              variant="contained"
-                              color={restaurant.isBlocked ? 'success' : 'error'}
-                              onClick={() => handleBlockUnblock(restaurant._id, restaurant.isBlocked)}
-                            >
-                              {restaurant.isBlocked ? 'Unblock' : 'Block'}
-                            </Button> */}
+                           
                           </TableCell>
                         );
                       }

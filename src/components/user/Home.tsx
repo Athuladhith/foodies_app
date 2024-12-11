@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-// import { getRestaurants, sortByRatings, sortByReviews, toggleVegOnly } from "../../actions/RestaurantAction";
+
 import Restaurant from "../user/Restaurant";
 import Message from "../user/Message";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,14 +21,6 @@ const Home: React.FC = () => {
   const [userid,setUserid]=useState<string>('')
 
   const{isAuthenticated,loading,error,user}=useSelector((state:RootState)=>state.auth)
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem('user');
-
-  // console.log(storedUser,'storeUser')
-  //   if (storedUser) {
-  //     console.log('User data from localStorage:', JSON.parse(storedUser));
-  //   }
-  // }, []);
   
 
 
@@ -49,52 +41,13 @@ const Home: React.FC = () => {
   }, []);
 
 
-  // const {
-  //   loading: restaurantsLoading,
-  //   error: restaurantsError,
-  //   restaurants,
-  //   showVegOnly,
-  // } = useSelector((state: RootState) => state.restaurant);
-
-  // useEffect(() => {
-  //   if (restaurantsError) {
-  //     return alert(restaurantsError); 
-  //   }
-  //   dispatch(getRestaurants(keyword) as any);
-  // }, [dispatch, restaurantsError, keyword]);
-
-  // const handleSortByRatings = () => {
-  //   dispatch(sortByRatings() as any);
-  // };
-
-  // const handleSortByReviews = () => {
-  //   dispatch(sortByReviews() as any);
-  // };
-
-  // const handleToggleVegOnly = () => {
-  //   dispatch(toggleVegOnly() as any);
-  // };
-  // const handleLogout = () => {
-   
-  //   localStorage.removeItem('token');
-    
-  //   navigate('/login');
-  //   window.location.reload();
-  // };
   return (
    <>
 <Main/>
   </>
 
   
-    // <div>
-    //   <Headder/>
-    //    {/* <ButtonAppBar />
-    // <div style={{display: "flex", width:'100%', justifyContent:"center", alignItems: "center", height: "100vh"}}>
-    // <RecipeReviewCard /> 
    
-    // </div> */}
-    // </div>
   );
 };
 

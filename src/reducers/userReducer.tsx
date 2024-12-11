@@ -11,6 +11,8 @@ import {
     LOGIN_USER_REQUEST ,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
+    FETCH_RESTAURANTS_SUCCESS,
+    FETCH_RESTAURANTS_REQUEST,FETCH_RESTAURANTS_FAIL
 } from '../constants/userConatants';
 import {
     LOGIN_ADMIN_REQUEST,
@@ -40,6 +42,7 @@ interface AuthState {
     isadminAuthenticated: boolean;
     token?: string | null;
     error?: any; 
+    restaurants: Array<any>;
 }
 
 
@@ -140,6 +143,18 @@ interface RegisterDeliverypersonFailAction {
     type: typeof REGISTER_DELIVERY_PERSON_FAIL;
     payload: any; 
 }
+
+interface FetchRestaurantRequestAction {
+    type: typeof FETCH_RESTAURANTS_REQUEST;      
+}
+interface FetchRestaurantSucessAction {
+    type: typeof FETCH_RESTAURANTS_SUCCESS;
+    payload: any;    
+}
+interface FetchRestaurantFailAction {
+    type: typeof FETCH_RESTAURANTS_FAIL;
+    payload: any;    
+}
 // Union type for all possible actions
 type AuthActionTypes =
     | RegisterUserRequestAction
@@ -163,6 +178,10 @@ type AuthActionTypes =
     |RegisterDeliverypersonRequestAction
     |RegisterDeliverypersonSuccessAction
     |RegisterDeliverypersonFailAction
+    | FetchRestaurantRequestAction
+    | FetchRestaurantSucessAction
+    | FetchRestaurantFailAction
+
    
 
 
@@ -170,6 +189,7 @@ const initialState: AuthState = {
     admin:null,
     user: null, 
     loading: false,
+    restaurants: [],
     isAuthenticated: false,
     isadminAuthenticated: false,
     token: localStorage.getItem('token') || null,
@@ -181,19 +201,26 @@ export const authReducer = (
 ): AuthState => {
     switch (action.type) {
         case REGISTER_USER_REQUEST:
+            case FETCH_RESTAURANTS_REQUEST:
             return {
                 ...state,
                 loading: true,
                 isAuthenticated: false,
             };
-        case REGISTER_USER_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: true,
-                user: action.payload,
-            };
+
+            case REGISTER_USER_SUCCESS:
+                return {
+                   ...state,
+                   loading:false,
+                   isAuthenticated:true,
+                };
+
+
+
+            case FETCH_RESTAURANTS_SUCCESS:
+            return { ...state, loading: false, restaurants: action.payload };
         case REGISTER_USER_FAIL:
+            case FETCH_RESTAURANTS_FAIL:
             return {
                 ...state,
                 loading: false,
@@ -282,8 +309,7 @@ export const authReducer = (
                   isadminAuthenticated: false,
                 };
               case LOGIN_ADMIN_SUCCESS:
-                localStorage.setItem('admintoken', action.payload.token);
-                localStorage.setItem('admin', JSON.stringify(action.payload.admin));
+                
                 console.log('Admin logged in:', JSON.stringify(action.payload.admin));
                 return {
                   ...state,

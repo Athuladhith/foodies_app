@@ -104,7 +104,6 @@ const user = storedUser ? JSON.parse(storedUser) : null;
                 ...orderData,
               });
   
-              // Clear the cart after successful order
               await clearCart();
               navigate('/orderdetails', { state: { paymentId: response.razorpay_payment_id, paymentMethod: 'razorpay' } });
             },
@@ -130,7 +129,6 @@ const user = storedUser ? JSON.parse(storedUser) : null;
           
         });
   
-        // Save the order for COD
         const { orderId } = codOrderResponse.data;
         await api.post('http://localhost:5000/api/users/saveOrder', {
           orderId: orderId,
@@ -138,16 +136,16 @@ const user = storedUser ? JSON.parse(storedUser) : null;
           paymentId: payid
         });
   
-        // Clear the cart and navigate
+        
         await clearCart();
         console.log('Navigating to orderdetails with COD');
-        // window.location.href = "/orderdetails"
+      
         navigate('/orderdetails', { state: {paymentId:payid, orderId: orderId, paymentMethod: 'cod' } });
       } else {
         
         await api.post('http://localhost:5000/api/users/createOrder', orderData,);
   
-        // Clear the cart after successful order
+
         await clearCart();
         navigate('/orderdetails', { state: { paymentMethod: 'credit_card' } });
       }
@@ -159,18 +157,17 @@ const user = storedUser ? JSON.parse(storedUser) : null;
   };
   
 
-  // Function to clear the cart (localStorage approach + backend API)
+
   const clearCart = async () => {
     try {
-      // Clear cart in the backend
+
       const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
       await clearCartApi(userId);
 
-      // Clear the cart items from localStorage
+
       localStorage.removeItem('cartItems');
 
-      // If you have state management for the cart, ensure to reset it:
-      // setCartItems([]); // Assuming cartItems is managed in state
+
     } catch (error) {
       console.error('Error clearing cart:', error);
     }
@@ -178,7 +175,7 @@ const user = storedUser ? JSON.parse(storedUser) : null;
   useEffect(() => {
     if (navigating) {
       console.log('Navigating to orderdetails');
-      // Reset navigating state if needed
+
       setNavigating(false);
     }
   }, [navigating]);
@@ -189,13 +186,13 @@ const user = storedUser ? JSON.parse(storedUser) : null;
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Side: Address Section */}
+     
         <div className="border p-4 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Select Address</h2>
             <AddressForm setSelectedAddress={setSelectedAddress} />  
         </div>
 
-        {/* Right Side: Payment & Order Summary */}
+      
         <div className="border p-4 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
 
@@ -274,7 +271,7 @@ const user = storedUser ? JSON.parse(storedUser) : null;
           <button
             className="mt-6 w-full bg-green-600 text-white px-8 py-4 rounded-lg shadow-md hover:bg-green-700 transition duration-200"
             onClick={handlePlaceOrder}
-            disabled={isLoading} // Disable button while loading
+            disabled={isLoading} 
           >
             {isLoading ? 'Processing...' : 'Place Order'}
           </button>

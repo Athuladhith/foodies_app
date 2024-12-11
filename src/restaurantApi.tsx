@@ -18,16 +18,6 @@ Api.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
-// Api.interceptors.response.use(
-//   (response) => response, // Pass through successful responses
-//   (error) => {
-//     if (error.response && error.response.status === 401) {
-//       // Token is expired or unauthorized
-//       localStorage.removeItem('tokenss'); // Remove the token
-//       window.location.href = '/login';
-//     }
-//     return Promise.reject(error); // Reject the promise to propagate the error
-//   }
-// );
+
 
 export default Api;

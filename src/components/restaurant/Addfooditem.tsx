@@ -65,7 +65,7 @@ const AddFoodItem: React.FC = () => {
     const canvas = cropper.getCanvas();
 
     if (canvas) {
-      // Convert the canvas to a Blob (for sending binary data)
+   
       canvas.toBlob((blob) => {
         if (blob) {
           const file = new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' });
@@ -113,7 +113,7 @@ const AddFoodItem: React.FC = () => {
     if (!foodImage) {
       newErrors.foodImage = "Please select an image for the food item.";
     }
-    if (selectedFoodType === "") { // Validate Veg/Non-Veg selection
+    if (selectedFoodType === "") { 
       newErrors.selectedFoodType = "Please select Veg or Non-Veg.";
     }
 

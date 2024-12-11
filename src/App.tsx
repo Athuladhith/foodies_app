@@ -39,6 +39,9 @@ import ChatPage from './components/user/Chat';
 import DeliveryBoyHome from './components/deliveryboy/deliveryboyHome';
 import DeliveryPersonTable from './components/admin/DeliverBoy';
 import DeliveryBoylogin from './components/deliveryboy/Deliveryboy';
+import TrackingPage from './components/user/TrackingPage'
+import Dashboard from './components/restaurant/Dashboard';
+import RestaurantChatPage from './components/restaurant/restaurantChat';
 
 
 function ProtectedRoute({ children, isAuthenticated }: { children: JSX.Element; isAuthenticated: boolean }) {
@@ -51,23 +54,19 @@ function ProtectRoute({ children, isAuthenticated }: { children: JSX.Element; is
 
 function App() {
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('tokenss');
   console.log(token,'token in the api.tsx')
   const admintoken =localStorage.getItem('admintoken')
   
 
 
-  // const isAuthenticated = !!token;
+
   const adminAuthenticated=!!admintoken
+  
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const{isAuthenticated,loading,error,user}=useSelector((state:RootState)=>state.auth)
   useEffect(()=> {
-    // if(user!== null){
-    //   localStorage.setItem('user', JSON.stringify(user));
-    // }
-    // if(admintoken!== null){
-    //   localStorage.setItem('admin', JSON.stringify(user));
-    // }
+   
   },[user,admintoken])
 
  
@@ -120,7 +119,7 @@ function App() {
           <Route path="/restaurantlogin" element={<RestaurantLogin />} />
           <Route path="/deliveryboylogin" element={<DeliveryBoylogin/>} />
           <Route path='/otp' element={<OtpVerification/>}/>
-          {/* <Route path='/home' element={isUserAuthenticated?<Home/>:<Login/>}/> */}
+         
           <Route path='/home' element={<ProctorRoute><Home/></ProctorRoute>}/>
            <Route path='/adminhome' element={adminAuthenticated?<AdminHomePage/>:<AdminLogin/>}/> 
           <Route path='/registerdeliveryboy' element={adminAuthenticated?<RegisterDeliveryPerson/>:<AdminLogin/>}/>
@@ -147,6 +146,9 @@ function App() {
        <Route path='/editfooditem/:id' element={<EditFoodItem/>}/>
         <Route path='/chat/:id' element={<ChatPage/>}/>
        <Route path='/deliveryboyhome' element={<DeliveryBoyHome/>}/> 
+       <Route path="/track-order/:orderId" element={<TrackingPage />} /> 
+       <Route path='/dashboard' element={<Dashboard/>}/>
+       <Route path='/restaurantchat' element={<RestaurantChatPage/>}/>
         </Routes>
       </div>
     </Router>

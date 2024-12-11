@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Create an instance of axios
-const api = axios.create({
+const Api = axios.create({
   baseURL: 'http://localhost:5000',
   headers: {
     'Content-Type': 'application/json',
@@ -9,8 +9,8 @@ const api = axios.create({
 });
 
 // Add an interceptor to include token in headers if it exists
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('tokenss');
+Api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('admintoken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -18,6 +18,4 @@ api.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
-
-
-export default api;
+export default Api;
