@@ -108,7 +108,7 @@ export const getDeliveryPersons = async (req: Request, res: Response): Promise<v
           deliveryboyid: deliveryperson._id, 
           email: deliveryperson.email,
         },
-        'your_jwt_secret_key_here',
+        process.env.JWT_SECRET as string,
         { expiresIn: '2h' } as SignOptions
       );
       res.status(200).json({

@@ -30,7 +30,7 @@ export const adminlogin = async (req: Request, res: Response): Promise<void> => 
       
         const token = jwt.sign(
           { userId: user._id.toHexString(), email: user.email },
-          'your_jwt_secret_key_here',
+          process.env.JWT_SECRET as string,
           { expiresIn: '1h' } as SignOptions
         );
 

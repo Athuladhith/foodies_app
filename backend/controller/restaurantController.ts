@@ -105,7 +105,7 @@ export const restaurantlogin = async (req: Request, res: Response): Promise<void
     if (restaurant.password && (await bcrypt.compare(password, restaurant.password))) {
       const token = jwt.sign(
         { userId: restaurant._id.toHexString(), email: restaurant.email },
-        'your_jwt_secret_key_here', 
+        process.env.JWT_SECRET as string, 
         { expiresIn: '1h' } as SignOptions
       );
 
