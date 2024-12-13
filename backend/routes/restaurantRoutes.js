@@ -1,0 +1,27 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const restaurantAuth_1 = __importDefault(require("../middlewares/restaurantAuth"));
+const restaurantController_1 = require("../controller/restaurantController");
+const router = express_1.default.Router();
+router.post('/restaurantlogin', restaurantController_1.restaurantlogin);
+router.post('/addcategory', restaurantAuth_1.default, restaurantController_1.addCategory);
+router.post('/addcuisine', restaurantAuth_1.default, restaurantController_1.addCuisine);
+router.post('/addfooditem', restaurantAuth_1.default, restaurantController_1.addFoodItem);
+router.get('/categories', restaurantController_1.getCategories);
+router.get('/cuisine', restaurantAuth_1.default, restaurantController_1.getCuisine);
+router.get('/fooditem', restaurantAuth_1.default, restaurantController_1.getFooditem);
+router.delete('/fooditem/:id', restaurantAuth_1.default, restaurantController_1.DeleteFoodItem);
+router.delete('/cuisine/:id', restaurantAuth_1.default, restaurantController_1.Deletecuisine);
+router.delete('/catagory/:id', restaurantAuth_1.default, restaurantController_1.Deletecatagory);
+router.get('/orders/:id', restaurantController_1.getOrderstorestaurant);
+router.post('/orderupdate/:id', restaurantController_1.makeorderupdate);
+router.get('/dashboard/:restaurantId', restaurantController_1.getDashboardData);
+router.get('/orders/:restaurantId', restaurantController_1.getFilteredOrders);
+router.get('/conversations/:id', restaurantController_1.getConversations);
+router.get('/messages/:conversationId', restaurantController_1.getMessages);
+router.post('/message', restaurantController_1.sendMessage);
+exports.default = router;
